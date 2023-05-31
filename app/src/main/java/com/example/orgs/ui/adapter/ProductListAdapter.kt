@@ -11,9 +11,9 @@ import com.example.orgs.model.Product
 
 class ProductListAdapter(
     val context: Context,
-    val productList: List<Product>
+    productList: List<Product>
 ) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
-
+    private val productList = productList.toMutableList()
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(product: Product) {
             val name = itemView.findViewById<TextView>(R.id.product_item_name)
@@ -38,5 +38,11 @@ class ProductListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = productList[position]
         holder.bind(product)
+    }
+
+    fun update(newList: List<Product>) {
+        productList.clear()
+        productList.addAll(newList)
+        notifyDataSetChanged()
     }
 }

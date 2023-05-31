@@ -1,9 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".ui.activity.ProductFormActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/activity_product_form_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="Name"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/activity_product_form_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@id/activity_product_form_name"
+            app:layout_constraintStart_toStartOf="@id/activity_product_form_name"
+            app:layout_constraintTop_toBottomOf="@id/activity_product_form_name" />
+
+        <EditText
+            android:id="@+id/activity_product_form_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Value"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toEndOf="@id/activity_product_form_description"
+            app:layout_constraintStart_toStartOf="@id/activity_product_form_description"
+            app:layout_constraintTop_toBottomOf="@id/activity_product_form_description" />
+
+        <Button
+            android:id="@+id/activity_product_form_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_product_form_value"
+            app:layout_constraintVertical_bias="1"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
