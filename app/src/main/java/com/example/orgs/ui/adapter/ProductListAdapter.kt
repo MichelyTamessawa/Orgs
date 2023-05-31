@@ -2,11 +2,9 @@ package com.example.orgs.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.orgs.R
+import com.example.orgs.databinding.ProductItemBinding
 import com.example.orgs.model.Product
 
 class ProductListAdapter(
@@ -14,21 +12,23 @@ class ProductListAdapter(
     productList: List<Product>
 ) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
     private val productList = productList.toMutableList()
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    class ViewHolder(binding: ProductItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val nameField = binding.productItemName
+        private val descriptionField = binding.productItemDescription
+        private val valueField = binding.productItemValue
+
         fun bind(product: Product) {
-            val name = itemView.findViewById<TextView>(R.id.product_item_name)
-            val description = itemView.findViewById<TextView>(R.id.product_item_description)
-            val value = itemView.findViewById<TextView>(R.id.product_item_value)
-            name.text = product.name
-            description.text = product.description
-            value.text = product.value.toPlainString()
+            nameField.text = product.name
+            descriptionField.text = product.description
+            valueField.text = product.value.toPlainString()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.product_item, parent, false)
-        return ViewHolder(view)
+        val binding = ProductItemBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
