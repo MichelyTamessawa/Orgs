@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.orgs.databinding.ProductItemBinding
 import com.example.orgs.model.Product
+import java.text.NumberFormat
+import java.util.Locale
 
 class ProductListAdapter(
     val context: Context,
@@ -21,7 +23,12 @@ class ProductListAdapter(
         fun bind(product: Product) {
             nameField.text = product.name
             descriptionField.text = product.description
-            valueField.text = product.value.toPlainString()
+            valueField.text = getFormattedValue(product)
+        }
+
+        private fun getFormattedValue(product: Product): String? {
+            val numberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
+            return numberFormat.format(product.value)
         }
     }
 
