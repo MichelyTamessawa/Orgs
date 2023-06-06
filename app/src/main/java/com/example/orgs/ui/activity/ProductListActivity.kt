@@ -28,7 +28,7 @@ class ProductListActivity : AppCompatActivity() {
     }
 
     private fun fabConfig() {
-        val fab = binding.floatingActionButton
+        val fab = binding.extendedFAB
         fab.setOnClickListener {
             val intent = Intent(this, ProductFormActivity::class.java)
             startActivity(intent)
