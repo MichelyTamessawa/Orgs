@@ -2,7 +2,9 @@ package com.example.orgs.ui.activity
 
 import android.os.Bundle
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.orgs.R
 import com.example.orgs.dao.ProductDao
 import com.example.orgs.databinding.ActivityProductFormBinding
 import com.example.orgs.model.Product
@@ -17,6 +19,15 @@ class ProductFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         saveButtonConfig()
+        binding.activityProductFormImage.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setView(R.layout.dialog_form_image)
+                .setPositiveButton("Confirmar") { _, _ ->
+                }
+                .setNegativeButton("Cancelar") { _, _ ->
+                }
+                .show()
+        }
     }
 
     private fun saveButtonConfig() {
