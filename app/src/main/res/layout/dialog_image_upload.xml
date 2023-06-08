@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/dialog_form_image"
+            android:id="@+id/dialog_image_upload_imageview"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
@@ -19,30 +19,31 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/dialog_form_button"
+            android:id="@+id/dialog_image_upload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Upload"
             app:icon="@drawable/ic_add_24"
-            app:layout_constraintBottom_toBottomOf="@id/dialog_form_image"
+            app:layout_constraintBottom_toBottomOf="@id/dialog_image_upload_imageview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dialog_form_image" />
+            app:layout_constraintTop_toBottomOf="@id/dialog_image_upload_imageview" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dialog_form_layout_url"
+            android:id="@+id/dialog_image_upload_layout_url"
             style="?attr/textInputOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dialog_form_button">
+            app:layout_constraintTop_toBottomOf="@id/dialog_image_upload_button">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/activity_product_form_name"
+                android:id="@+id/dialog_image_upload_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:hint="URL" />
 
         </com.google.android.material.textfield.TextInputLayout>

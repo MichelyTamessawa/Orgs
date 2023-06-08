@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.orgs.R
+import coil.load
 import com.example.orgs.dao.ProductDao
 import com.example.orgs.databinding.ActivityProductFormBinding
+import com.example.orgs.databinding.DialogImageUploadBinding
 import com.example.orgs.model.Product
 import java.math.BigDecimal
 
@@ -15,16 +16,33 @@ class ProductFormActivity : AppCompatActivity() {
         ActivityProductFormBinding.inflate(layoutInflater)
     }
 
+    private val bindingFormImage by lazy {
+        DialogImageUploadBinding.inflate(layoutInflater)
+    }
+
+    private var url : String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         saveButtonConfig()
         binding.activityProductFormImage.setOnClickListener {
+            val dialogUploadButton = bindingFormImage.dialogImageUploadButton
+            val dialogUrlTextView = bindingFormImage.dialogImageUploadUrl
+            val dialogImageView = bindingFormImage.dialogImageUploadImageview
+            dialogUploadButton.setOnClickListener {
+                if (dialogUrlTextView.text?.isNotBlank()!!)
+                    dialogImageView.load(dialogUrlTextView.text.toString())
+            }
             AlertDialog.Builder(this)
-                .setView(R.layout.dialog_form_image)
-                .setPositiveButton("Confirmar") { _, _ ->
+                .setView(bindingFormImage.root)
+                .setPositiveButton("Confirm") { _, _ ->
+                    if (dialogUrlTextView.text?.isNotBlank()!!) {
+                        this.url = dialogUrlTextView.text.toString()
+                        binding.activityProductFormImage.load(this.url)
+                    }
                 }
-                .setNegativeButton("Cancelar") { _, _ ->
+                .setNegativeButton("Cancel") { _, _ ->
                 }
                 .show()
         }
@@ -49,7 +67,8 @@ class ProductFormActivity : AppCompatActivity() {
         return Product(
             name = nameField.text.toString(),
             description = descriptionField.text.toString(),
-            value = getNewProductValue(valueField)
+            value = getNewProductValue(valueField),
+            imageUrl = this.url
         )
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.orgs.databinding.ProductItemBinding
 import com.example.orgs.model.Product
 import java.text.NumberFormat
@@ -19,11 +20,13 @@ class ProductListAdapter(
         private val nameField = binding.productItemName
         private val descriptionField = binding.productItemDescription
         private val valueField = binding.productItemValue
+        private val imageView = binding.imageView
 
         fun bind(product: Product) {
             nameField.text = product.name
             descriptionField.text = product.description
             valueField.text = getFormattedValue(product)
+            imageView.load(product.imageUrl)
         }
 
         private fun getFormattedValue(product: Product): String? {

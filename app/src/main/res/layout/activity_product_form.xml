@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/produto_1"
+            android:src="@drawable/imagem_padrao"
             app:layout_constraintBottom_toBottomOf="@id/activity_product_form_layout_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
