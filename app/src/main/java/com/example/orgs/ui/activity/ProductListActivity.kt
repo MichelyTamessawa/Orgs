@@ -10,7 +10,11 @@ import com.example.orgs.ui.adapter.ProductListAdapter
 
 class ProductListActivity : AppCompatActivity() {
     private val productDao = ProductDao()
-    private val adapter = ProductListAdapter(context = this, productDao.getAll())
+    private val adapter = ProductListAdapter(context = this, productDao.getAll()) { product ->
+        val intent =
+            Intent(this, ProductDetailsActivity::class.java).apply { putExtra("product", product) }
+        startActivity(intent)
+    }
     private val binding by lazy {
         ActivityProductListBinding.inflate(layoutInflater)
     }
@@ -39,9 +43,5 @@ class ProductListActivity : AppCompatActivity() {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.setOnClickListener {
-            val intent = Intent(this, ProductDetailsActivity::class.java)
-            startActivity(intent)
-        }
     }
 }

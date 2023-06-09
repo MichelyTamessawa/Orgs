@@ -17,7 +17,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/imagem_padrao" />
+            tools:srcCompat="@drawable/imagem_padrao"
+            android:contentDescription="Product Image" />
 
         <TextView
             android:id="@+id/activity_product_details_name"
@@ -29,7 +30,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/activity_product_details_image"
+            app:layout_constraintTop_toBottomOf="@id/activity_product_details_value"
             tools:text="@tools:sample/lorem/random" />
 
         <TextView
@@ -51,8 +52,8 @@
             android:background="@drawable/rounded_background"
             android:elevation="10dp"
             android:fontFamily="@font/montserrat_bold"
-            android:padding="10dp"
             android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
             android:textColor="#4CAF50"
             android:textSize="24sp"
             android:textStyle="bold"
