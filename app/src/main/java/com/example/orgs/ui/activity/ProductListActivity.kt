@@ -39,5 +39,9 @@ class ProductListActivity : AppCompatActivity() {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setOnClickListener {
+            val intent = Intent(this, ProductDetailsActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
