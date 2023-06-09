@@ -2,10 +2,13 @@ package com.example.orgs.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.orgs.R
 import com.example.orgs.databinding.ProductItemBinding
+import com.example.orgs.extensions.loadingImage
 import com.example.orgs.model.Product
 import java.text.NumberFormat
 import java.util.Locale
@@ -26,7 +29,12 @@ class ProductListAdapter(
             nameField.text = product.name
             descriptionField.text = product.description
             valueField.text = getFormattedValue(product)
-            imageView.load(product.imageUrl)
+            imageView.visibility =
+                if (product.imageUrl != null)
+                    View.VISIBLE
+                else
+                    View.GONE
+            imageView.loadingImage(product.imageUrl)
         }
 
         private fun getFormattedValue(product: Product): String? {

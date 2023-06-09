@@ -2,13 +2,12 @@ package com.example.orgs.ui.activity
 
 import android.os.Bundle
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import coil.load
 import com.example.orgs.dao.ProductDao
 import com.example.orgs.databinding.ActivityProductFormBinding
-import com.example.orgs.databinding.DialogImageUploadBinding
+import com.example.orgs.extensions.loadingImage
 import com.example.orgs.model.Product
+import com.example.orgs.ui.dialog.ImageFormDialog
 import java.math.BigDecimal
 
 class ProductFormActivity : AppCompatActivity() {
@@ -16,35 +15,18 @@ class ProductFormActivity : AppCompatActivity() {
         ActivityProductFormBinding.inflate(layoutInflater)
     }
 
-    private val bindingFormImage by lazy {
-        DialogImageUploadBinding.inflate(layoutInflater)
-    }
-
-    private var url : String? = null
+    private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        title = "Register Product"
         saveButtonConfig()
         binding.activityProductFormImage.setOnClickListener {
-            val dialogUploadButton = bindingFormImage.dialogImageUploadButton
-            val dialogUrlTextView = bindingFormImage.dialogImageUploadUrl
-            val dialogImageView = bindingFormImage.dialogImageUploadImageview
-            dialogUploadButton.setOnClickListener {
-                if (dialogUrlTextView.text?.isNotBlank()!!)
-                    dialogImageView.load(dialogUrlTextView.text.toString())
+            ImageFormDialog(this).show(url) { imageUrl ->
+                url = imageUrl
+                binding.activityProductFormImage.loadingImage(url)
             }
-            AlertDialog.Builder(this)
-                .setView(bindingFormImage.root)
-                .setPositiveButton("Confirm") { _, _ ->
-                    if (dialogUrlTextView.text?.isNotBlank()!!) {
-                        this.url = dialogUrlTextView.text.toString()
-                        binding.activityProductFormImage.load(this.url)
-                    }
-                }
-                .setNegativeButton("Cancel") { _, _ ->
-                }
-                .show()
         }
     }
 
