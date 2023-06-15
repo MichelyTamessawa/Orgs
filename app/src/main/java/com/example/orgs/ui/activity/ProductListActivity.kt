@@ -4,13 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.orgs.dao.ProductDao
+import com.example.orgs.database.AppDataBase
 import com.example.orgs.databinding.ActivityProductListBinding
 import com.example.orgs.ui.adapter.ProductListAdapter
 
 class ProductListActivity : AppCompatActivity() {
-    private val productDao = ProductDao()
-    private val adapter = ProductListAdapter(context = this, productDao.getAll()) { product ->
+    private val adapter = ProductListAdapter(context = this) { product ->
         val intent =
             Intent(this, ProductDetailsActivity::class.java).apply { putExtra("product", product) }
         startActivity(intent)
@@ -28,7 +27,9 @@ class ProductListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        adapter.update(productDao.getAll())
+        val db = AppDataBase.getInstance(this)
+        val dao = db.productDao()
+        adapter.update(dao.getAll())
     }
 
     private fun fabConfig() {

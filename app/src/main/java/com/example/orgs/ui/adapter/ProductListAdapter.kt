@@ -14,7 +14,7 @@ import java.util.Locale
 
 class ProductListAdapter(
     val context: Context,
-    productList: List<Product>,
+    productList: List<Product> = emptyList(),
     var onItemClicked: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
     private val productList = productList.toMutableList()

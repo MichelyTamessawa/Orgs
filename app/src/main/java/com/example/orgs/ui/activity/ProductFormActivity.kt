@@ -3,7 +3,7 @@ package com.example.orgs.ui.activity
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.example.orgs.dao.ProductDao
+import com.example.orgs.database.AppDataBase
 import com.example.orgs.databinding.ActivityProductFormBinding
 import com.example.orgs.extensions.loadingImage
 import com.example.orgs.model.Product
@@ -32,7 +32,8 @@ class ProductFormActivity : AppCompatActivity() {
 
     private fun saveButtonConfig() {
         val saveButton = binding.activityProductFormButton
-        val dao = ProductDao()
+        val db = AppDataBase.getInstance(this)
+        val dao = db.productDao()
 
         saveButton.setOnClickListener {
             val newProduct = getNewProduct()
