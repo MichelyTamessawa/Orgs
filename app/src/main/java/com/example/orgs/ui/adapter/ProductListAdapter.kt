@@ -2,33 +2,48 @@ package com.example.orgs.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
+import com.example.orgs.R
 import com.example.orgs.databinding.ProductItemBinding
 import com.example.orgs.extensions.brCurrencyFormatter
 import com.example.orgs.extensions.loadingImage
 import com.example.orgs.model.Product
-import java.text.NumberFormat
-import java.util.Locale
 
 class ProductListAdapter(
-    val context: Context,
+    private val context: Context,
     productList: List<Product> = emptyList(),
-    var onItemClicked: (Product) -> Unit
+    var onItemClicked: (product: Product) -> Unit = {},
+    var onEditItem: (product: Product) -> Unit = {},
+    var onDeleteItem: (product: Product) -> Unit = {},
 ) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
     private val productList = productList.toMutableList()
 
-    class ViewHolder(
+    inner class ViewHolder(
         private val binding: ProductItemBinding,
-        onItemClicked: (Int) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+        onItemClicked: (Int) -> Unit,
+    ) : RecyclerView.ViewHolder(binding.root), PopupMenu.OnMenuItemClickListener {
+        private lateinit var product: Product
 
         init {
-            itemView.setOnClickListener { onItemClicked(adapterPosition) }
+            itemView.setOnClickListener {
+                if (::product.isInitialized)
+                    onItemClicked(adapterPosition)
+            }
+            itemView.setOnLongClickListener {
+                PopupMenu(context, itemView).apply {
+                    menuInflater.inflate(R.menu.menu_product_details, menu)
+                    setOnMenuItemClickListener(this@ViewHolder)
+                }.show()
+                true
+            }
         }
 
         fun bind(product: Product) {
+            this.product = product
             val nameField = binding.productItemName
             val descriptionField = binding.productItemDescription
             val valueField = binding.productItemValue
@@ -42,6 +57,16 @@ class ProductListAdapter(
                 else
                     View.GONE
             imageView.loadingImage(product.imageUrl)
+        }
+
+        override fun onMenuItemClick(item: MenuItem?): Boolean {
+            item?.let {
+                when (item.itemId) {
+                    R.id.menu_product_details_edit -> onEditItem(product)
+                    R.id.menu_product_details_delete -> onDeleteItem(product)
+                }
+            }
+            return true
         }
     }
 

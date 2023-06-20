@@ -12,13 +12,18 @@ import com.example.orgs.model.Product
 @Database(entities = [Product::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDataBase : RoomDatabase() {
-    abstract fun productDao() : ProductDao
+    abstract fun productDao(): ProductDao
 
     companion object {
-        fun getInstance(context: Context) : AppDataBase {
+        @Volatile
+        private lateinit var db: AppDataBase
+        fun getInstance(context: Context): AppDataBase {
+            if (::db.isInitialized)
+                return db
             return Room.databaseBuilder(context, AppDataBase::class.java, "orgs.db")
-            .allowMainThreadQueries()
-            .build()
+                .allowMainThreadQueries()
+                .build()
+                .also { db = it }
         }
     }
 }

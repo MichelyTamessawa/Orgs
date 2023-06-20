@@ -43,7 +43,6 @@
                 android:id="@+id/dialog_image_upload_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
                 android:hint="URL" />
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -11,8 +11,14 @@ import com.example.orgs.ui.dialog.ImageFormDialog
 import java.math.BigDecimal
 
 class ProductFormActivity : AppCompatActivity() {
+    private var idProduct: Long = 0L
+
     private val binding by lazy {
         ActivityProductFormBinding.inflate(layoutInflater)
+    }
+
+    private val productDao by lazy {
+        AppDataBase.getInstance(this).productDao()
     }
 
     private var url: String? = null
@@ -22,6 +28,31 @@ class ProductFormActivity : AppCompatActivity() {
         setContentView(binding.root)
         title = "Register Product"
         saveButtonConfig()
+        imageViewConfig()
+        tryGetProduct()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        productDao.getById(idProduct)?.let {
+            title = "Update Product"
+            bindViews(it)
+        }
+    }
+
+    private fun tryGetProduct() {
+        idProduct = intent.getLongExtra(PRODUCT_ID_KEY, 0L)
+    }
+
+    private fun bindViews(product: Product) {
+        url = product.imageUrl
+        binding.activityProductFormName.setText(product.name)
+        binding.activityProductFormDescription.setText(product.description)
+        binding.activityProductFormValue.setText(product.value.toPlainString())
+        binding.activityProductFormImage.loadingImage(product.imageUrl)
+    }
+
+    private fun imageViewConfig() {
         binding.activityProductFormImage.setOnClickListener {
             ImageFormDialog(this).show(url) { imageUrl ->
                 url = imageUrl
@@ -32,12 +63,9 @@ class ProductFormActivity : AppCompatActivity() {
 
     private fun saveButtonConfig() {
         val saveButton = binding.activityProductFormButton
-        val db = AppDataBase.getInstance(this)
-        val dao = db.productDao()
-
         saveButton.setOnClickListener {
-            val newProduct = getNewProduct()
-            dao.insert(newProduct)
+            val product = getNewProduct()
+            productDao.insert(product)
             finish()
         }
     }
@@ -48,6 +76,7 @@ class ProductFormActivity : AppCompatActivity() {
         val valueField = binding.activityProductFormValue
 
         return Product(
+            uid = idProduct,
             name = nameField.text.toString(),
             description = descriptionField.text.toString(),
             value = getNewProductValue(valueField),
