@@ -16,12 +16,9 @@ abstract class AppDataBase : RoomDatabase() {
 
     companion object {
         @Volatile
-        private lateinit var db: AppDataBase
+        private var db: AppDataBase? = null
         fun getInstance(context: Context): AppDataBase {
-            if (::db.isInitialized)
-                return db
-            return Room.databaseBuilder(context, AppDataBase::class.java, "orgs.db")
-                .allowMainThreadQueries()
+            return db ?: Room.databaseBuilder(context, AppDataBase::class.java, "orgs.db")
                 .build()
                 .also { db = it }
         }
