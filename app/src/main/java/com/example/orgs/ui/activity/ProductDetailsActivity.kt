@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.orgs.R
 import com.example.orgs.database.AppDataBase
 import com.example.orgs.databinding.ActivityProductDetailsBinding
 import com.example.orgs.extensions.brCurrencyFormatter
 import com.example.orgs.extensions.loadingImage
 import com.example.orgs.model.Product
+import kotlinx.coroutines.launch
 
 class ProductDetailsActivity : AppCompatActivity() {
     private var idProduct: Long? = null
@@ -25,20 +27,20 @@ class ProductDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         tryGetProduct()
-    }
-
-    override fun onResume() {
-        super.onResume()
         getProduct()
     }
 
     private fun getProduct() {
-        idProduct?.let {
-            product = productDao.getById(it)
+        lifecycleScope.launch {
+            idProduct?.let {
+                productDao.getById(it).collect { foundedProduct ->
+                    product = foundedProduct
+                    product?.let {
+                        bindViews(product)
+                    } ?: finish()
+                }
+            }
         }
-        product?.let {
-            bindViews(product)
-        } ?: finish()
     }
 
     private fun tryGetProduct() {
@@ -59,8 +61,10 @@ class ProductDetailsActivity : AppCompatActivity() {
             }
 
             R.id.menu_product_details_delete -> {
-                product?.let { productDao.delete(it) }
-                finish()
+                lifecycleScope.launch {
+                    product?.let { productDao.delete(it) }
+                    finish()
+                }
             }
         }
         return super.onOptionsItemSelected(item)

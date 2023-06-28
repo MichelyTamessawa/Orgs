@@ -7,39 +7,40 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.orgs.model.Product
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
     @Query("Select * from Product")
-    fun getAll(): List<Product>
+    fun getAll(): Flow<List<Product>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg product: Product)
+    suspend fun insert(vararg product: Product)
 
     @Delete
-    fun delete(vararg product: Product)
+    suspend fun delete(vararg product: Product)
 
     @Update
-    fun update(vararg product: Product)
+    suspend fun update(vararg product: Product)
 
     @Query("Select * from Product where uid = :id")
-    fun getById(id: Long): Product?
+    fun getById(id: Long): Flow<Product?>
 
     @Query("Select * from Product order by name desc")
-    fun getAllSortedByNameDesc(): List<Product>
+    fun getAllSortedByNameDesc(): Flow<List<Product>>
 
     @Query("Select * from Product order by name asc")
-    fun getAllSortedByNameAsc(): List<Product>
+    fun getAllSortedByNameAsc(): Flow<List<Product>>
 
     @Query("Select * from Product order by description desc")
-    fun getAllSortedByDescriptionDesc(): List<Product>
+    fun getAllSortedByDescriptionDesc(): Flow<List<Product>>
 
     @Query("Select * from Product order by description asc")
-    fun getAllSortedByDescriptionAsc(): List<Product>
+    fun getAllSortedByDescriptionAsc(): Flow<List<Product>>
 
     @Query("Select * from Product order by value desc")
-    fun getAllSortedByValueDesc(): List<Product>
+    fun getAllSortedByValueDesc(): Flow<List<Product>>
 
     @Query("Select * from Product order by value asc")
-    fun getAllSortedByValueAsc(): List<Product>
+    fun getAllSortedByValueAsc(): Flow<List<Product>>
 }

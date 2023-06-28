@@ -3,11 +3,13 @@ package com.example.orgs.ui.activity
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.orgs.database.AppDataBase
 import com.example.orgs.databinding.ActivityProductFormBinding
 import com.example.orgs.extensions.loadingImage
 import com.example.orgs.model.Product
 import com.example.orgs.ui.dialog.ImageFormDialog
+import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 class ProductFormActivity : AppCompatActivity() {
@@ -29,18 +31,22 @@ class ProductFormActivity : AppCompatActivity() {
         title = "Register Product"
         saveButtonConfig()
         imageViewConfig()
+        getProductId()
         tryGetProduct()
     }
 
-    override fun onResume() {
-        super.onResume()
-        productDao.getById(idProduct)?.let {
-            title = "Update Product"
-            bindViews(it)
+    private fun tryGetProduct() {
+        lifecycleScope.launch {
+            productDao.getById(idProduct).collect { foundedProduct ->
+                foundedProduct?.let {
+                    title = "Update Product"
+                    bindViews(foundedProduct)
+                }
+            }
         }
     }
 
-    private fun tryGetProduct() {
+    private fun getProductId() {
         idProduct = intent.getLongExtra(PRODUCT_ID_KEY, 0L)
     }
 
@@ -65,8 +71,10 @@ class ProductFormActivity : AppCompatActivity() {
         val saveButton = binding.activityProductFormButton
         saveButton.setOnClickListener {
             val product = getNewProduct()
-            productDao.insert(product)
-            finish()
+            lifecycleScope.launch {
+                productDao.insert(product)
+                finish()
+            }
         }
     }
 
